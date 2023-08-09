@@ -1,1 +1,2 @@
-# Development of the audio side of the Music Telepresence Project
+# Music Telepresence
+Development of the audio side of the Music Telepresence Project
