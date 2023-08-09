@@ -1,0 +1,6 @@
+librosa==0.10.0.post2
+numpy==1.22.4
+PyAudio==0.2.13
+PySoundFile==0.9.0.post1
+scipy==1.7.2
+soundfile==0.12.1
