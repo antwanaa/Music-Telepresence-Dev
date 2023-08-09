@@ -6,3 +6,4 @@
 /gui_tests.py
 /HRTF Processing Demo.ipynb
 /microphone_realtime_audio.py
+__pycache__/
