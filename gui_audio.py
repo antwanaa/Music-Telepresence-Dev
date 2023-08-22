@@ -50,7 +50,7 @@ with wave.open('Samples 48k\Buddy2.wav', 'rb') as wf:
         try:
             data_np2 = binaural.make_binaural(data_np2, gui.horAngle.get(), gui.vertAngle.get(), gui.hrtfSelector.get())
         except RuntimeError:
-            exit("GUI was closed")
+            exit("==================\n| GUI was closed |\n==================")
         
         if debug: print(np.max(np.abs(data_np2)))
 

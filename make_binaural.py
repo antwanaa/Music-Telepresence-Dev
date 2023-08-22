@@ -19,49 +19,6 @@ sliding_window_left = np.zeros(10)
 sliding_window_right = np.zeros(10)
 
 
-# Function responsible for convolving the left channel
-def convolveLeft(signal, hrtf):
-    k = len(signal) + len(hrtf) - 1
-    hrtf_padded = np.pad(hrtf, (0,k-len(hrtf)))
-    global sliding_window_left
-    if(len(sliding_window_left) != k):
-        sliding_window_left = np.zeros(k)
-        if debug: print("REINITIALIZING THE LEFT SLIDING WINDOW")
-    # print(sliding_window_left)
-    sliding_window_left = np.delete(sliding_window_left, np.s_[0:len(signal)])
-    # print(sliding_window_left.shape)
-    sliding_window_left = np.append(sliding_window_left, signal)
-    # print(sliding_window_left.shape)
-    signal_ft = np.fft.fftn(sliding_window_left)
-    hrtf_ft = np.fft.fftn(hrtf_padded)
-    sig = np.multiply(signal_ft, hrtf_ft)
-    inv_ft = np.fft.ifftn(sig)
-    # valid_samples = inv_ft[len(inv_ft)-len(signal):]
-    # print('length: ',len(inv_ft), len(signal), len(inv_ft)-len(signal))
-    valid_samples = np.real(inv_ft[len(inv_ft)-len(signal):])
-
-    return valid_samples
-
-# Function responsible for convolving the right channel
-def convolveRight(signal, hrtf):
-    k = len(signal) + len(hrtf) - 1
-    hrtf_padded = np.pad(hrtf, (0,k-len(hrtf)))
-    global sliding_window_right
-    if(len(sliding_window_right) != k):
-        sliding_window_right = np.zeros(k)
-        if debug: print("REINITIALIZING THE RIGHT SLIDING WINDOW")
-    sliding_window_right = np.delete(sliding_window_right, np.s_[0:len(signal)])
-    sliding_window_right = np.append(sliding_window_right, signal)
-    signal_ft = np.fft.fftn(sliding_window_right)
-    hrtf_ft = np.fft.fftn(hrtf_padded)
-    sig = np.multiply(signal_ft, hrtf_ft)
-    inv_ft = np.fft.ifftn(sig)
-    # valid_samples = inv_ft[len(inv_ft)-len(signal):]
-    # print('length: ',len(inv_ft), len(signal), len(inv_ft)-len(signal))
-    valid_samples = np.real(inv_ft[len(inv_ft)-len(signal):])
-
-    return valid_samples
-
 
 class binauralAudio:
     def __init__(self, debug_state):
@@ -201,6 +158,49 @@ class binauralAudio:
             Bin_Mix = np.vstack([s_out_L[0:audio_data.shape[1]].astype(np.int16),s_out_R[0:audio_data.shape[1]].astype(np.int16)])
         self.previousHRTF = hrtf_name
         return Bin_Mix
+
+# Function responsible for convolving the left channel
+def convolveLeft(signal, hrtf):
+    k = len(signal) + len(hrtf) - 1
+    hrtf_padded = np.pad(hrtf, (0,k-len(hrtf)))
+    global sliding_window_left
+    if(len(sliding_window_left) != k):
+        sliding_window_left = np.zeros(k)
+        if debug: print("REINITIALIZING THE LEFT SLIDING WINDOW")
+    # print(sliding_window_left)
+    sliding_window_left = np.delete(sliding_window_left, np.s_[0:len(signal)])
+    # print(sliding_window_left.shape)
+    sliding_window_left = np.append(sliding_window_left, signal)
+    # print(sliding_window_left.shape)
+    signal_ft = np.fft.fftn(sliding_window_left)
+    hrtf_ft = np.fft.fftn(hrtf_padded)
+    sig = np.multiply(signal_ft, hrtf_ft)
+    inv_ft = np.fft.ifftn(sig)
+    # valid_samples = inv_ft[len(inv_ft)-len(signal):]
+    # print('length: ',len(inv_ft), len(signal), len(inv_ft)-len(signal))
+    valid_samples = np.real(inv_ft[len(inv_ft)-len(signal):])
+
+    return valid_samples
+
+# Function responsible for convolving the right channel
+def convolveRight(signal, hrtf):
+    k = len(signal) + len(hrtf) - 1
+    hrtf_padded = np.pad(hrtf, (0,k-len(hrtf)))
+    global sliding_window_right
+    if(len(sliding_window_right) != k):
+        sliding_window_right = np.zeros(k)
+        if debug: print("REINITIALIZING THE RIGHT SLIDING WINDOW")
+    sliding_window_right = np.delete(sliding_window_right, np.s_[0:len(signal)])
+    sliding_window_right = np.append(sliding_window_right, signal)
+    signal_ft = np.fft.fftn(sliding_window_right)
+    hrtf_ft = np.fft.fftn(hrtf_padded)
+    sig = np.multiply(signal_ft, hrtf_ft)
+    inv_ft = np.fft.ifftn(sig)
+    # valid_samples = inv_ft[len(inv_ft)-len(signal):]
+    # print('length: ',len(inv_ft), len(signal), len(inv_ft)-len(signal))
+    valid_samples = np.real(inv_ft[len(inv_ft)-len(signal):])
+
+    return valid_samples
 
 # Function that creates the dictionaries mapping the directions to corresponding HRTFs for all HRTF datasets
 def make_dictionaries():
