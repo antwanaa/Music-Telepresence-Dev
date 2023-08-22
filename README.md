@@ -11,3 +11,23 @@ Development of the audio side of the Music Telepresence Project
   - May 18, 1994
 - LISTEN HRTF DATABASE
   - http://recherche.ircam.fr/equipes/salles/listen/index.html
+
+The folder structure needs to look like the following:
+
+```
+src
+├── HRTFsets
+│   ├── LISTEN
+│   │   ├── LISTEN Dataset
+│   ├── MIT
+│   │   ├── MIT Dataset
+│   ├── SOFA Far-Field
+│   │   ├── SOFA Dataset
+├── Samples 48k
+│   ├── Your .wav audio samples
+├── gui_audio.py
+├── gui.py
+├── make_binaural.py
+├── readme.md 
+└── .gitignore
+```
