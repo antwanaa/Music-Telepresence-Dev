@@ -55,7 +55,7 @@ class binauralAudio:
             if debug: print("MIT - horizontal angle: ", hor_ang)
 
             padding = str(hor_ang).rjust(3, "0")
-            hrtf_name = 'HRTFsets/MIT/diffuse/elev' + str(vert_ang) + '\H' + str(vert_ang) + 'e' + padding + 'a.wav'
+            hrtf_name = 'HRTFsets/MIT/diffuse/elev' + str(vert_ang) + '/H' + str(vert_ang) + 'e' + padding + 'a.wav'
             # FILES = glob.glob(hrtf_name)
             # print(FILES)
             if debug: print("concatenated hrtf: ", hrtf_name)
@@ -94,12 +94,14 @@ class binauralAudio:
             # s_0_L = signal.fftconvolve(audio_data[0,:].T,HRIR_0[0,:], mode='full') # spatialized source 0 LEFT
             # s_0_R = signal.fftconvolve(audio_data[1,:].T,HRIR_0[1,:], mode='full') # spatialized source 0 RIGHT
             if not hrtf_invert:
-                s_0_L = convolveLeft(audio_data[0,:], HRIR_0[0,:])     # Convolve the left signal
-                s_0_R = convolveRight(audio_data[1,:], HRIR_0[1,:])    # Convolve the right signal
+                s_0_L = convolveLeft(audio_data[0,:], HRIR_0.T[0,:])     # Convolve the left signal
+                s_0_R = convolveRight(audio_data[1,:], HRIR_0.T[1,:])    # Convolve the right signal
             else:   # invert the channels of the HRIR
-                s_0_L = convolveLeft(audio_data[0,:], HRIR_0[1,:])     # Convolve the left signal
-                s_0_R = convolveRight(audio_data[1,:], HRIR_0[0,:])    # Convolve the right signal
+                s_0_L = convolveLeft(audio_data[0,:], HRIR_0.T[1,:])     # Convolve the left signal
+                s_0_R = convolveRight(audio_data[1,:], HRIR_0.T[0,:])    # Convolve the right signal
 
+            s_0_L *= np.iinfo(np.int16).max + 1.0
+            s_0_R *= np.iinfo(np.int16).max + 1.0
 
             # Combine the LEFT and RIGHT signals in a way that the audio stream expects
             Bin_Mix = np.vstack([s_0_L[0:audio_data.shape[1]].astype(np.int16),s_0_R[0:audio_data.shape[1]].astype(np.int16)])
@@ -152,6 +154,9 @@ class binauralAudio:
 
                 s_out_L = s_0_L*f_out + s_1_L*f_in
                 s_out_R = s_0_R*f_out + s_1_R*f_in
+
+            s_out_L *= np.iinfo(np.int16).max + 1.0
+            s_out_R *= np.iinfo(np.int16).max + 1.0
             
 
             # Combine the LEFT and RIGHT signals in a way that the audio stream expects
