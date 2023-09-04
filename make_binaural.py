@@ -1,6 +1,6 @@
-import numpy as np
-import librosa
 import glob
+import numpy as np
+from util import load_audio
 
 # Directories (specific for my computer)
 source_dir = 'Samples 48k/*.wav'
@@ -89,7 +89,7 @@ class binauralAudio:
 
             # Load the HRTF based on angle given
             # HRIR_0, fs_H0 = librosa.load(_LISTEN[index],sr=48000,mono=False)
-            HRIR_0, fs_H0 = librosa.load(hrtf_name,sr=44100,mono=False)
+            HRIR_0, fs_H0 = load_audio(hrtf_name)
 
             # s_0_L = signal.fftconvolve(audio_data[0,:].T,HRIR_0[0,:], mode='full') # spatialized source 0 LEFT
             # s_0_R = signal.fftconvolve(audio_data[1,:].T,HRIR_0[1,:], mode='full') # spatialized source 0 RIGHT
@@ -109,8 +109,8 @@ class binauralAudio:
             # Load the HRTF for the old and new angle
             # HRIR_0, fs_H0 = librosa.load(_LISTEN[previousIndex],sr=48000,mono=False)
             # HRIR_1, fs_H0 = librosa.load(_LISTEN[index],sr=48000,mono=False)
-            HRIR_0, fs_H0 = librosa.load(self.previousHRTF,sr=44100,mono=False)
-            HRIR_1, fs_H0 = librosa.load(hrtf_name,sr=44100,mono=False)
+            HRIR_0, fs_H0 = load_audio(self.previousHRTF)
+            HRIR_1, fs_H0 = load_audio(hrtf_name)
 
             if not hrtf_invert:
                 temp = sliding_window_left
