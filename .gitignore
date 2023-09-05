@@ -1,4 +1,5 @@
 /Example1.wav
+*.pstats
 /Example2.wav
 /file_realtime_audio.py
 /gui_audio.zip

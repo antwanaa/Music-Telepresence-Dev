@@ -8,7 +8,7 @@ from make_binaural import binauralAudio
 
 debug = False
 
-CHUNK = 1024
+CHUNK = 4096 * 32
 
 def audio_playback():
     binaural = binauralAudio(debug)
