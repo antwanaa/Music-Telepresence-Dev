@@ -6,3 +6,12 @@
 /HRTF Processing Demo.ipynb
 /microphone_realtime_audio.py
 __pycache__/
+tests.ipynb
+room_color_tests.ipynb
+img/switch_off.psd
+.gitignore
+.vscode/settings.json
+launchGUI.py
+img/switch_off.png
+img/switch_on.png
+Impulse Response Database/air_database_release_1_4.zip
