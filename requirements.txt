@@ -1,4 +1,4 @@
 librosa==0.10.1
-numpy==1.26.2
+numpy==1.26.1
 pyaudio==0.2.14
 sv_ttk==2.5.5
