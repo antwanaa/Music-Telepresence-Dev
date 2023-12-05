@@ -2,10 +2,11 @@ import tkinter as tk
 from tkinter.ttk import * 
 from tkinter.font import Font
 
-import sv_ttk
-# from typing import Any
-
 import threading
+
+import sv_ttk # theme for tkinter
+
+
 
 
 class GUI(threading.Thread):
