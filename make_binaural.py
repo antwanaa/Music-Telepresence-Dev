@@ -18,7 +18,7 @@ _SOFA = glob.glob(hrtf_dir_SOFA)
 sliding_window_left = np.zeros(10)
 sliding_window_right = np.zeros(10)
 
-
+# TODO: when loading the HRTF, compute the FFT so that we do not need to compute it every iteration
 
 class binauralAudio:
     def __init__(self, debug_state):

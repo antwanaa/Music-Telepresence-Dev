@@ -50,6 +50,7 @@ class GUI(threading.Thread):
         self.hrtfSelector.set("MIT") # default value
         self.w3 = Combobox(self.root, 
                            textvariable=self.hrtfSelector, 
+                           state="readonly",
                            values=["LISTEN", "MIT", "SOFA"]).place(x=290, y=10, width=150)
         
         self.s0 = Separator(self.root, 
@@ -68,9 +69,10 @@ class GUI(threading.Thread):
                               variable=self.colorRoom).place(x=220, y=65)
 
         self.firSelector = tk.StringVar(self.root)
-        self.firSelector.set('Aula Carolina')
+        self.firSelector.set('Booth')
         self.w4 = Combobox(self.root, 
-                           textvariable=self.firSelector, 
+                           textvariable=self.firSelector,
+                           state="readonly",
                            values=['Booth',     'Office',       'Meeting',
                                    'Lecture 1', 'Lecture 2',    'Stairway 1',
                                    'Stairway 2','Stairway 3',   'Corridor',

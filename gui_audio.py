@@ -9,7 +9,7 @@ from room_color import roomColor
 
 debug = False
 
-CHUNK = 1024
+CHUNK = 2048
 # CHUNK = 16384
 
 
@@ -56,7 +56,7 @@ with wave.open('Samples 48k\Buddy2.wav', 'rb') as wf:
 
         ## Give the audio a "room color"
         if(gui.colorRoom.get()):
-            data_np2 = room.colorize_room(data_np2, "15")
+            data_np2 = room.colorize_room(data_np2, gui.firSelector.get())
 
         ## Make Binaural audio
         if(gui.useBin.get()):

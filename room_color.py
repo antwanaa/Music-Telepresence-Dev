@@ -24,7 +24,6 @@ class roomColor:
         global debug
         debug = debug_state
         
-
     def colorize_room(self, audio_data: np.ndarray[np.float32], room: str) -> np.ndarray[np.float32]:
         global audio_data_history
         global audio_ft_history
@@ -54,8 +53,9 @@ class roomColor:
         # then do not load it from memory again, otherwise:
         if(room != room_fir_str):
             if debug: print(room)
-            print(_ROOMS[int(room)])
-            room_fir, fs_H0 = librosa.load(_ROOMS[int(room)],sr=44100,mono=False)  # Load the room FIR
+            # print(_ROOMS[int(room)])
+            # room_fir, fs_H0 = librosa.load(_ROOMS[int(room)],sr=44100,mono=False)  # Load the room FIR
+            room_fir = loadRoomFIR(room)
             room_fir_str = room                                             # Save the name of the FIR
                        
             # If the room_fir is single channel, then make it stereo by copying the channel into both L and R
@@ -154,3 +154,50 @@ class roomColor:
                 output[1, :] += right
 
         return output[:, 0:CHUNK_SIZE]
+    
+
+def loadRoomFIR(room: str):
+    values=['Booth','Office','Meeting','Lecture 1','Lecture 2','Stairway 1',
+            'Stairway 2','Stairway 3','Corridor','Bathroom','Aula Carolina']
+    distance = 3
+    azimuth = 0
+    
+    if(room=="Booth"):
+        room_name = 'booth'
+    elif(room=="Office"):
+        room_name = 'office'
+    elif(room=="Meeting"):
+        room_name = 'meeting'
+    elif(room=="Lecture 1"):
+        room_name = 'lecture'
+    elif(room=="Lecture 2"):
+        room_name = 'lecutre1'
+    elif(room=="Stairway 1"):
+        room_name = 'stairway'
+    elif(room=="Stairway 2"):
+        room_name = 'stairway1'
+    elif(room=="Stairway 3"):
+        room_name = 'stairway2'
+    elif(room=="Corridor"):
+        room_name = 'corridor'
+    elif(room=="Bathroom"):
+        room_name = 'bathroom'
+    elif(room=="Aula Carolina"):
+        room_name = 'aula_carolina'
+    else:
+        print("NAME ERROR")
+
+    if(room=="Stairway 2"):
+        filenameL = 'air_stairway1_' + "0" + '_1_' + str(distance) + "_" + str(azimuth)
+        filenameR = 'air_stairway1_' + "1" + '_1_' + str(distance) + "_" + str(azimuth)
+    elif(room=="Aula Carolina"):
+        print("No corresponding .wav file")
+    else:
+        filenameL = "air_" + room_name + "_" + "0" + '_1_' + str(distance)
+        filenameR = "air_" + room_name + "_" + "1" + '_1_' + str(distance)
+    
+    directory = 'Impulse Response Database/AIR_1_4/AIR_wav_files/'
+    firL, fs = librosa.load(str(directory+filenameL+".wav"),sr=44100,mono=False)  # Load the room FIR
+    firR, fs = librosa.load(str(directory+filenameR+".wav"),sr=44100,mono=False)  # Load the room FIR
+    fir = np.vstack((firL, firR))
+    return fir
